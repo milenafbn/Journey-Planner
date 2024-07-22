@@ -1,8 +1,6 @@
 package com.rocketseat.planner.trip;
 
-import com.rocketseat.planner.activities.ActivityRequestPayload;
-import com.rocketseat.planner.activities.ActivityResponse;
-import com.rocketseat.planner.activities.ActivityService;
+import com.rocketseat.planner.activities.*;
 import com.rocketseat.planner.participant.*;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +106,13 @@ public class TripController {
         List<ParticipantData> participantList = this.participantService.getAllParticipantsFromEvent(id);
 
         return ResponseEntity.ok(participantList);
+    }
+
+    @GetMapping("/{id}/activities")
+    public ResponseEntity<List<ActivityData>> getAllActivities(@PathVariable UUID id){
+        List<ActivityData> activityList = this.activityService.getAllActivities(id);
+
+        return ResponseEntity.ok(activityList);
     }
 
     @PostMapping("/{id}/activities") //endpoint de POST
