@@ -1,6 +1,9 @@
 package com.rocketseat.planner.trip;
 
 import com.rocketseat.planner.activity.*;
+import com.rocketseat.planner.link.LinkRequestPayload;
+import com.rocketseat.planner.link.LinkResponse;
+import com.rocketseat.planner.link.LinkService;
 import com.rocketseat.planner.participant.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +26,12 @@ public class TripController {
     private ActivityService activityService;
 
     @Autowired
+    private LinkService linkService;
+
+    @Autowired
     private TripRepository repository;
+
+    //Trips
 
     @PostMapping //endpoint de POST
     public ResponseEntity<TripCreateResponse> createTrip(@RequestBody TripRequestPayload payload){
@@ -62,6 +70,8 @@ public class TripController {
 
         return ResponseEntity.notFound().build();
     }
+
+    //Participants
 
     @GetMapping("/{id}/confirm") //endpoint de GET
     public ResponseEntity<Trip> confirmTrip(@PathVariable UUID id){
@@ -106,12 +116,7 @@ public class TripController {
         return ResponseEntity.ok(participantList);
     }
 
-    @GetMapping("/{id}/activities")
-    public ResponseEntity<List<ActivityData>> getAllActivities(@PathVariable UUID id){
-        List<ActivityData> activityList = this.activityService.getAllActivities(id);
-
-        return ResponseEntity.ok(activityList);
-    }
+    //Activities
 
     @PostMapping("/{id}/activities") //endpoint de POST
     public ResponseEntity<ActivityResponse> registerActivity(@PathVariable UUID id, @RequestBody ActivityRequestPayload payload){
@@ -128,4 +133,29 @@ public class TripController {
 
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/{id}/activities")
+    public ResponseEntity<List<ActivityData>> getAllActivities(@PathVariable UUID id){
+        List<ActivityData> activityList = this.activityService.getAllActivities(id);
+
+        return ResponseEntity.ok(activityList);
+    }
+
+    //Links
+
+    @PostMapping("/{id}/link") //endpoint de POST
+    public ResponseEntity<LinkResponse> registerLink(@PathVariable UUID id, @RequestBody LinkRequestPayload payload){
+        Optional<Trip> trip = this.repository.findById(id);
+
+        if(trip.isPresent()){
+            Trip rawTrip = trip.get();
+
+            LinkResponse linkResponse = this.linkService.registerLink(payload, rawTrip);
+
+            return ResponseEntity.ok(linkResponse);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
 }

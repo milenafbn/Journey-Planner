@@ -1,4 +1,6 @@
 package com.rocketseat.planner.link;
 
-public record LinkResponse() {
+import java.util.UUID;
+
+public record LinkResponse(UUID linkId) {
 }
