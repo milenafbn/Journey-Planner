@@ -1,15 +1,13 @@
 package com.rocketseat.planner.trip;
 
-import com.rocketseat.planner.activities.*;
+import com.rocketseat.planner.activity.*;
 import com.rocketseat.planner.participant.*;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
